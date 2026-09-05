@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday! 特別的生日驚喜</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            background: #0f172a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+            background: #000;
+        }
+
+        video {
+            width: 100%;
+            max-height: 450px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .quiz-box {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            max-width: 320px;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            border: 2px solid #38bdf8;
+            background: rgba(15, 23, 42, 0.8);
+            color: #fff;
+            outline: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            border-color: #7dd3fc;
+        }
+
+        .btn {
+            margin-top: 15px;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0f172a;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6);
+        }
+
+        .error-msg {
+            color: #f87171;
+            margin-top: 12px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        /* Confetti / Balloon decorations */
+        .hearts {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            pointer-events: none;
+        }
+
+        .custom-wish {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #f472b6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 第一頁：五月天問答互動頁 -->
+        <div id="page1" class="page active">
+            <h1>五月天的神秘考驗 🎵</h1>
+            <p>點擊播放影片，聽聽團員們說了什麼？並回答他們的問題！</p>
+            
+            <div class="video-wrapper">
+                <video id="video1" controls playsinline>
+                    <source src="WhatsApp Video 2026-09-05 at 8.33.14 PM.mp4" type="video/mp4">
+                    您的瀏覽器不支援影片播放。
+                </video>
+            </div>
+
+            <div class="quiz-box">
+                <p><strong>問：請問影片中五月天說「大家好，我們是……」？</strong></p>
+                <input type="text" id="answerInput" placeholder="請輸入答案 (提示：三個字)">
+                <br>
+                <button class="btn" onclick="checkAnswer()">確認送出</button>
+                <div id="errorMsg" class="error-msg">答案不對喔！提示：輸入「五月天」試試看～</div>
+            </div>
+        </div>
+
+        <!-- 第二頁：生日祝福影片播放頁 -->
+        <div id="page2" class="page">
+            <h1>🎉 生日快樂！Happy Birthday! 🎂</h1>
+            <p>答對了！接下來是五月天專程為妳準備的生日祝福歌曲與影片：</p>
+
+            <div class="video-wrapper">
+                <!-- 預設播放五月天生日祝福影片 -->
+                <video id="video2" controls playsinline autoplay>
+                    <source src="WhatsApp Video 2026-09-05 at 8.58.38 PM.mp4" type="video/mp4">
+                    您的瀏覽器不支援影片播放。
+                </video>
+            </div>
+
+            <div class="custom-wish">
+                <p style="color: #f472b6; font-weight: bold; margin-bottom: 8px;">💌 來自我的特別祝福：</p>
+                <p style="margin-bottom: 0;">祝妳生日快樂！希望這份小驚喜能帶給妳滿滿的笑容與感動，願妳新的一歲所有的願望都能實現！✨</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const input = document.getElementById('answerInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            // 驗證答案是否包含「五月天」
+            if (input === "五月天" || input.toLowerCase() === "mayday") {
+                errorMsg.style.display = "none";
+                
+                // 停止第一頁影片播放
+                const video1 = document.getElementById('video1');
+                video1.pause();
+
+                // 切換到第二頁
+                document.getElementById('page1').classList.remove('active');
+                setTimeout(() => {
+                    document.getElementById('page1').style.display = 'none';
+                    const page2 = document.getElementById('page2');
+                    page2.style.display = 'block';
+                    setTimeout(() => {
+                        page2.classList.add('active');
+                        // 播放第二頁影片
+                        const video2 = document.getElementById('video2');
+                        video2.play().catch(e => console.log("Autoplay blocked:", e));
+                    }, 50);
+                }, 500);
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        // 支援 Enter 鍵送出
+        document.getElementById('answerInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
